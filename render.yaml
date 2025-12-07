@@ -1,0 +1,32 @@
+services:
+  - type: web
+    name: ai-loan-backend
+    env: docker
+    region: singapore
+    plan: starter
+    dockerfilePath: backend/Dockerfile
+    envVars:
+      - key: REDIS_URL
+        fromService:
+          name: ai-loan-redis
+          type: redis
+          property: connectionString
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: ENVIRONMENT
+        value: production
+
+  - type: static
+    name: ai-loan-frontend
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    staticPublishPath: dist
+    envVars:
+      - key: VITE_BACKEND_URL
+        value: https://ai-loan-backend.onrender.com
+
+databases:
+  - name: ai-loan-redis
+    plan: starter
+    region: singapore
+    type: redis

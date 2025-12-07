@@ -1,0 +1,6 @@
+fastapi
+uvicorn[standard]
+aioredis
+reportlab
+openai
+python-multipart
